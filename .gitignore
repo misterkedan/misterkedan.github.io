@@ -1,5 +1,6 @@
 .DS_Store
-package-lock.json
-node_modules
-test
-_
+Thumbs.db
+node_modules/*
+_/*
+dist/*
+*.code-workspace
