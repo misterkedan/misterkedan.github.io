@@ -49,7 +49,6 @@ body {
 }
 
 @media screen and (min-width: 36rem) {
-
 	#demo-title {
 		margin: 5rem 5.5rem 2rem;
 		font-size: 4rem;
@@ -59,5 +58,4 @@ body {
 		margin-left: 6rem;
 		font-size: 1rem;
 	}
-
 }
