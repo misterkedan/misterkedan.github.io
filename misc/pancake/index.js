@@ -20,7 +20,7 @@ const playlists = [
   },
   {
     name: 'Sleep Jazz',
-    url: 'https://open.spotify.com/playlist/4HyGkv6S9rGhLHXAlyHtkW?si=4fc5dfa5ab2e4f45',
+    url: 'https://open.spotify.com/playlist/60taqgl7bvcXIRYmyupj4J?si=f8d154dbd0e144c0',
     img: 'https://mosaic.scdn.co/300/ab67616d00001e0267a53566d0155a7a8b5c14e3ab67616d00001e027525fae4fbb894430bdb2766ab67616d00001e02d99ccee752519a34a06210a0ab67616d00001e02e7643f8ed5dc5a8c947f9bcd',
   },
 ];
