@@ -4,89 +4,105 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="description" content="Video player with SRT subtitles support.">
+  <meta name="description" content="Video player with SRT subs support.">
   <meta author="Kedan">
-  <title>Huh? - Video Player</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
+  <title>Huh Video Player</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=0.2">
+  <script defer src="script.js?v=0.2"></script>
 </head>
 <body>
   <div id="container">
     <div id="controls">
       <div id="file-controls">
-        <h2>Files</h2>
+        <h2>FILES</h2>
         <div class="file-control">
           <label class="file-button">
-            <input type="file" id="videoFile" accept="video/mp4,video/x-matroska">
+            <input type="file" id="videoInput" accept="video/*">
             MP4
           </label>
-          <span id="videoName" class="filename">No file</span>
+          <span id="videoFileName" class="filename">No file</span>
         </div>
         <div class="file-control">
           <label class="file-button">
-            <input type="file" id="subtitleFile" accept=".srt">
+            <input type="file" id="subsInput" accept=".srt">
             SRT
           </label>
-          <span id="subtitleName" class="filename">No file</span>
+          <span id="subsFileName" class="filename">No file</span>
         </div>
       </div> <!-- file-controls -->
     
-      <div id="subtitle-controls">
-        <h2>Settings</h2>
-        <div class="subtitle-control">
+      <div id="subs-controls">
+        <h2>SETTINGS</h2>
+        <div class="subs-control">
           <label>Enable</label>
-          <input type="checkbox" id="subEnabled" checked>
+          <input type="checkbox" id="subEnabled">
         </div>
-        <div class="subtitle-control">
+        <div class="subs-control">
           <label>Size</label>
-          <select id="subSize" class="styled-select">
-            <option value="16px">16px</option>
-            <option value="24px">24px</option>
-            <option value="32px" selected>32px</option>
-            <option value="48px">48px</option>
+          <select id="subSize">
+            <option value="1.6rem">16</option>
+            <option value="2.4rem">20</option>
+            <option value="2.4rem">24</option>
+            <option value="2.8rem" selected>28</option>
+            <option value="3.2rem">32</option>
+            <option value="3.6rem">36</option>
+            <option value="4.0rem">40</option>
+            <option value="4.4rem">44</option>
+            <option value="4.8rem">48</option>
           </select>
         </div>
-        <div class="subtitle-control">
+        <div class="subs-control">
           <label>Font</label>
-          <select id="subFont" class="styled-select">
-            <option value="monospace" selected>Monospace</option>
-            <option value="sans-serif">Sans-Serif</option>
+          <select id="subFont">
             <option value="serif">Serif</option>
+            <option value="sans-serif" selected>Sans-Serif</option>
+            <option value="monospace">Monospace</option>
           </select>
         </div>
-        <div class="subtitle-control">
+        <div class="subs-control">
           <label>Color</label>
-          <select id="subColor" class="styled-select">
+          <select id="subColor">
             <option value="#ffffff" selected>White</option>
             <option value="#ffff00">Yellow</option>
           </select>
         </div>
-        <div class="subtitle-control">
-          <label>Shadow</label>
-          <select id="subShadow" class="styled-select">
+        <div class="subs-control">
+          <label>Bgd</label>
+          <select id="subBgd">
             <option value="none">None</option>
-            <option value="solid">Solid</option>
             <option value="soft" selected>Soft</option>
+            <option value="solid">Solid</option>
             <option value="stroke">Stroke</option>
           </select>
         </div>
-        <div class="subtitle-control">
-          <label>Opacity</label>
-          <select id="subOpacity" class="styled-select">
-            <option value="0">0%</option>
-            <option value="0.25">25%</option>
-            <option value="0.5">50%</option>
-            <option value="0.75">75%</option>
-            <option value="1" selected>100%</option>
+        <div class="subs-control">
+          <label>BgdAlpha</label>
+          <select id="subBgdAlpha">
+            <option value="0">0</option>
+            <option value="0.1">0.1</option>
+            <option value="0.2">0.2</option>
+            <option value="0.3">0.3</option>
+            <option value="0.4">0.4</option>
+            <option value="0.5">0.5</option>
+            <option value="0.6" selected>0.6</option>
+            <option value="0.7">0.7</option>
+            <option value="0.8">0.8</option>
+            <option value="0.9">0.9</option>
+            <option value="1">1</option>
           </select>
         </div>
-      </div> <!-- subtitle-controls -->
+      </div> <!-- subs-controls -->
     </div> <!-- controls -->
 
     <div id="video-area">
       <div id="video-wrapper">
         <video id="video" controls></video>
-        <div id="custom-subs"></div>
+        <div id="subs-wrapper" class="hidden">
+          <div id="subs"></div>
+        </div>
       </div>
     </div>
   </div> <!-- container -->

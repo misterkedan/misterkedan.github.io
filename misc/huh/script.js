@@ -1,76 +1,44 @@
 /*
   TODO
-  - Style subtitles with classes
-  - Replace "Style" with "Font Family"
-  - Check files loading function implementation
-  - Fix solid shadow option
   - Add support for playlists/multiple files (tv series)
 */
 
 const video = document.getElementById('video');
-const customSubs = document.getElementById('custom-subs');
+const subsWrapper = document.getElementById('subs-wrapper');
+const subs = document.getElementById('subs');
+const videoInput = document.getElementById('videoInput');
+const videoFileName = document.getElementById('videoFileName');
+const subsInput = document.getElementById('subsInput');
+const subsFileName = document.getElementById('subsFileName');
 
-const videoInput = document.getElementById('videoFile');
-const subtitleInput = document.getElementById('subtitleFile');
-const videoName = document.getElementById('videoName');
-const subtitleName = document.getElementById('subtitleName');
-
-const subSettings = {
+const subsControls = {
   size: document.getElementById('subSize'),
   font: document.getElementById('subFont'),
   color: document.getElementById('subColor'),
-  shadow: document.getElementById('subShadow'),
-  opacity: document.getElementById('subOpacity'),
+  bgd: document.getElementById('subBgd'),
+  bgdAlpha: document.getElementById('subBgdAlpha'),
   enabled: document.getElementById('subEnabled'),
 };
+let subsData = [];
+let currentSub = { index: -1, text: '' };
 
-let subtitles = [];
-let currentSubtitleIndex = -1;
-let currentSubtitle = { index: -1, text: '' };
-
-videoInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const url = URL.createObjectURL(file);
-    video.src = url;
-    videoName.textContent = file.name;
-    videoName.classList.add('loaded');
-  }
-});
-
-subtitleInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      subtitles = parseSRT(reader.result);
-    };
-    reader.readAsText(file);
-    subtitleName.textContent = file.name;
-    subtitleName.classList.add('loaded');
-  }
-});
-
-video.addEventListener('timeupdate', () => {
-  if (!subSettings.enabled.checked) {
-    customSubs.innerHTML = '';
-    return;
-  }
-
-  const currentTime = video.currentTime;
-  const sub = subtitles.find(
-    (s) => currentTime >= s.start && currentTime <= s.end
-  );
-
-  if (sub && currentSubtitleIndex !== sub.index) {
-    currentSubtitleIndex = sub.index;
-    renderSubtitle(sub.text);
-    currentSubtitle = sub;
-  } else if (!sub) {
-    customSubs.innerHTML = '';
-    currentSubtitleIndex = -1;
-  }
-});
+function loadVideo(file) {
+  const url = URL.createObjectURL(file);
+  video.src = url;
+  videoFileName.textContent = file.name;
+  videoFileName.classList.add('loaded');
+}
+function loadSubs(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    subsData = parseSRT(reader.result);
+  };
+  reader.readAsText(file);
+  subsFileName.textContent = file.name;
+  subsFileName.classList.add('loaded');
+  subsControls.enabled.checked = true;
+  setSubsVisibility();
+}
 
 function parseSRT(data) {
   const entries = data.split(/\r?\n\r?\n/);
@@ -99,32 +67,71 @@ function srtTimeToSeconds(time) {
   );
 }
 
-function renderSubtitle(text) {
-  const size = subSettings.size.value;
-  const font = subSettings.font.value;
-  const color = subSettings.color.value;
-  const shadow = subSettings.shadow.value;
-  const opacity = subSettings.opacity.value;
-
-  const shadowColor = `rgba(0,0,0,${opacity})`;
-  let styles = `font-size: ${size}; font-family: ${font}; color: ${color};`;
-  if (shadow === 'soft') {
-    styles += ` text-shadow: 0 0 1em ${shadowColor};`;
-  } else if (shadow === 'stroke') {
-    styles += ` -webkit-text-stroke: 0.2em ${shadowColor};`;
-  } else if (shadow === 'background') {
-    styles += ` background: ${shadowColor}; padding: 0.2em 0.5em; border-radius: 0.3em;`;
+function updateSubs() {
+  const currentTime = video.currentTime;
+  const sub = subsData.find(
+    (s) => currentTime >= s.start && currentTime <= s.end
+  );
+  if (!sub) {
+    currentSub.index = -1;
+    currentSub.text = '';
+    subs.innerHTML = '';
+  } else if (currentSub.index !== sub.index) {
+    currentSub = sub;
+    subs.innerHTML = sub.text;
   }
-  customSubs.innerHTML = `<div class="subtitles" style="${styles}">${text}</div>`;
 }
 
-document.querySelectorAll('select').forEach((select) => {
-  select.addEventListener('change', () => {
-    renderSubtitle(currentSubtitle.text);
-  });
+function setSubsStyle() {
+  const size = subsControls.size.value;
+  const color = subsControls.color.value;
+  const font = subsControls.font.value;
+  const bgd = subsControls.bgd.value;
+  const bgdAlpha = subsControls.bgdAlpha.value;
+  const bgdColor = `rgba(0,0,0,${bgdAlpha})`;
+  let style = `font-size: ${size}; color: ${color};`;
+  if (bgd === 'soft') {
+    style += ` text-shadow: 0 0 0.2em ${bgdColor};`;
+  } else if (bgd === 'stroke') {
+    style += ` -webkit-text-stroke: 0.2em ${bgdColor};`;
+  } else if (bgd === 'solid') {
+    style += ` background: ${bgdColor}; padding: 0.2em 0.5em; border-radius: 0.1em;`;
+  }
+  subs.setAttribute('style', style);
+  subs.classList.remove('monospace', 'sans-serif', 'serif');
+  subs.classList.add(font);
+}
+
+function setSubsVisibility() {
+  if (subsControls.enabled.checked) {
+    subsWrapper.classList.remove('hidden');
+  } else {
+    subsWrapper.classList.add('hidden');
+  }
+  updateSubs();
+}
+
+videoInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) loadVideo(file);
 });
 
-// Drag and drop support
+subsInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) loadSubs(file);
+});
+
+video.addEventListener('timeupdate', () => {
+  if (subsControls.enabled.checked) updateSubs();
+});
+
+document.querySelectorAll('select').forEach((select) => {
+  select.addEventListener('change', setSubsStyle);
+});
+
+subsControls.enabled.addEventListener('change', setSubsVisibility);
+
+// Drag and drop
 ['dragenter', 'dragover'].forEach((event) => {
   document.body.addEventListener(event, (e) => e.preventDefault());
 });
@@ -132,39 +139,30 @@ document.querySelectorAll('select').forEach((select) => {
 document.body.addEventListener('drop', (e) => {
   e.preventDefault();
   const files = [...e.dataTransfer.files];
-  const loadVideo = (file) => {
-    const url = URL.createObjectURL(file);
-    video.src = url;
-    videoName.textContent = file.name;
-    videoName.classList.add('loaded');
-  };
-  const loadSubtitles = (file) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      subtitles = parseSRT(reader.result);
-    };
-    reader.readAsText(file);
-    subtitleName.textContent = file.name;
-    subtitleName.classList.add('loaded');
-  };
-
   files.forEach((file) => {
     if (file.type.startsWith('video/')) {
       loadVideo(file);
     } else if (file.name.endsWith('.srt')) {
-      loadSubtitles(file);
+      loadSubs(file);
     }
   });
 });
 
-// Fullscreen toggle
-document.addEventListener('keydown', (e) => {
+// Pseudo fullscreen toggle
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.body.classList.remove('pseudo-fullscreen');
+  }
+
   if (e.key === 'f') {
-    const wrapper = document.getElementById('video-wrapper');
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    } else {
-      wrapper.requestFullscreen();
-    }
+    document.body.classList.toggle('pseudo-fullscreen');
+  }
+
+  if (e.key === 'e') {
+    subsControls.enabled.checked = !subsControls.enabled.checked;
+    setSubsVisibility();
   }
 });
+
+video.volume = 0.5;
+setSubsStyle();
