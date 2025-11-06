@@ -4,9 +4,14 @@ const confirmation = document.getElementById('confirmation');
 
 const playlists = [
   {
-    name: '80s Japanese Pop',
-    url: 'https://open.spotify.com/playlist/7lGmJcLihxa3bVawvCsCpW?si=55ba2d6674a147bb',
-    img: 'https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da8448d257a2a5a9f146b4b7e26b',
+    name: 'Sleep Jazz',
+    url: 'https://open.spotify.com/playlist/60taqgl7bvcXIRYmyupj4J?si=08f932f4c9c347de',
+    img: 'https://mosaic.scdn.co/300/ab67616d00001e0267a53566d0155a7a8b5c14e3ab67616d00001e027525fae4fbb894430bdb2766ab67616d00001e02d99ccee752519a34a06210a0ab67616d00001e02e7643f8ed5dc5a8c947f9bcd',
+  },
+  {
+    name: 'The Japanese Town',
+    url: 'https://open.spotify.com/playlist/530PKjax47wPmtaBKuCrAk?si=34107901a2444778&nd=1&dlsi=e77116d1bf3b4595',
+    img: 'https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72c09ba904d9f032983286791db',
   },
   {
     name: 'Home Sweet Home',
@@ -14,14 +19,14 @@ const playlists = [
     img: 'https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da84a7d0fb0aaffe5420e8e8f1ff',
   },
   {
+    name: '80s Japanese Pop',
+    url: 'https://open.spotify.com/playlist/48NQRmwGdkXhf05XLXA43D?si=55d2b38b845840ff&nd=1&dlsi=fd2250aedb384922',
+    img: 'https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72c223bb21eb320dc49cbec59d7',
+  },
+  {
     name: 'Midnight Bourbon',
     url: 'https://open.spotify.com/playlist/4HyGkv6S9rGhLHXAlyHtkW?si=844aecc2d4b9403a',
     img: 'https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da842e53edaec085214a37868f47',
-  },
-  {
-    name: 'Sleep Jazz',
-    url: 'https://open.spotify.com/playlist/60taqgl7bvcXIRYmyupj4J?si=f8d154dbd0e144c0',
-    img: 'https://mosaic.scdn.co/300/ab67616d00001e0267a53566d0155a7a8b5c14e3ab67616d00001e027525fae4fbb894430bdb2766ab67616d00001e02d99ccee752519a34a06210a0ab67616d00001e02e7643f8ed5dc5a8c947f9bcd',
   },
 ];
 const controls = [
